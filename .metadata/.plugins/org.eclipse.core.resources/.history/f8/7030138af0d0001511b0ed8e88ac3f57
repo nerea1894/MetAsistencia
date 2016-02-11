@@ -1,0 +1,216 @@
+package metasistencia;
+
+import java.awt.BorderLayout;
+import java.awt.Panel;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import DAO.AparienciaDAO;
+import DAO.LugarDAO;
+import DAO.UsuarioDAO;
+import DAO.Usuario_AficionDAO;
+import connectionDB.ConnectionDB;
+import metodos.*;
+import model.*;
+import main.*;
+
+public class FramePrincipal extends JFrame implements ActionListener{
+	
+	private static final long serialVersionUID = 1L;
+	
+	static Login panelInicio;
+	
+	Usuario usuarioConectado;
+	ArrayList<Aficion> aficionConectado;
+	ArrayList<Usuario> amigosConectado;
+	Apariencia aparienciaConectado;
+	Lugar lugarConectado;
+	ArrayList<Encuentros> encuentrosConectado;
+	
+	Usuario usuarioRegistrado;
+	Apariencia aparienciaRegistrado;
+	Lugar lugarRegistrado;
+	ArrayList<Aficion> aficionesRegistrado;
+	
+	JMenuBar mbMenu;
+	JMenu mMenu;
+	private JMenuItem iPerfil, iAmigos, iUsuarios, iEncuentros, iDesconectar, iSalir;
+	private boolean conectado = false;
+		
+	public FramePrincipal(){
+		
+		setTitle("LAMETA");
+		this.setLayout(null);
+		panelInicio = new Login(this);
+		panelInicio.setLayout(null);
+		this.setContentPane(panelInicio);
+		panelInicio.setVisible(true);
+		
+		// Creacion de componentes
+		mbMenu = new JMenuBar();
+		mMenu = new JMenu("Menu");
+		iPerfil = new JMenuItem("Perfil");
+		iAmigos = new JMenuItem("Amigos");
+		iUsuarios = new JMenuItem("Usuarios");
+		iEncuentros = new JMenuItem("Encuentros");
+		iDesconectar = new JMenuItem("Desconectar");
+		iSalir = new JMenuItem("Salir");
+		
+		mMenu.add(iPerfil);
+		mMenu.add(iAmigos);
+		mMenu.add(iUsuarios);
+		mMenu.add(iEncuentros);
+		mMenu.add(iDesconectar);
+		mMenu.add(iSalir);
+		mbMenu.add(mMenu);
+		setJMenuBar(mbMenu);
+		
+		iPerfil.addActionListener(this);
+		iAmigos.addActionListener(this);
+		iUsuarios.addActionListener(this);
+		iEncuentros.addActionListener(this);
+		iDesconectar.addActionListener(this);
+		iSalir.addActionListener(this);
+		
+		desactivarMenu();
+		
+	}	
+	
+	//Cambios de panel
+	public void cambiarPanel(JPanel panel){
+		this.getContentPane().setVisible(false);
+		panel.setBounds(this.getBounds());
+		this.setContentPane(panel);
+		panel.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource().equals(iPerfil)){
+			cambiarPanel(new Perfil(this));
+		}
+		if(e.getSource().equals(iAmigos)){
+			cambiarPanel(new VerAmigos(this));
+		}
+		if(e.getSource().equals(iUsuarios)){
+			cambiarPanel(new VerUsuarios(this));
+		}
+		if(e.getSource().equals(iEncuentros)){
+			cambiarPanel(new VerEncuentros(this));
+		}
+		if(e.getSource().equals(iDesconectar)){
+			desconectar();
+		}
+		if(e.getSource().equals(iSalir)){
+			Object[] textosalir = {"Si", "No"};
+			
+			int opcion = JOptionPane.showOptionDialog(getContentPane(),
+					"¿Seguro que desea salir?", //que queremos que salga en el panel
+					"Mensaje de confirmación",//titulo
+					JOptionPane.YES_NO_OPTION, //que tipo es
+					JOptionPane.QUESTION_MESSAGE, //que tipo de mensaje es
+					null, //lo dejamos a null
+					textosalir,
+					textosalir[0]);
+			
+			if(opcion==0)
+				System.exit(0);
+		}
+	}
+	
+	public void desconectar() {
+		usuarioConectado = null;
+		cambiarPanel(new Login(this));
+		desactivarMenu();		
+	}
+
+	public void activarMenu(){
+		iPerfil.setEnabled(true);
+		iAmigos.setEnabled(true);
+		iUsuarios.setEnabled(true);
+		iEncuentros.setEnabled(true);
+		iDesconectar.setEnabled(true);
+	}
+	
+	public void desactivarMenu(){
+		iPerfil.setEnabled(false);
+		iAmigos.setEnabled(false);
+		iUsuarios.setEnabled(false);
+		iEncuentros.setEnabled(false);
+		iDesconectar.setEnabled(false);
+	}
+	
+	public void construccionConectado(){
+		this.usuarioConectado = this.usuarioRegistrado;
+		this.lugarConectado = this.lugarRegistrado;
+		this.aparienciaConectado = this.aparienciaRegistrado;
+		this.aficionConectado = this.aficionesRegistrado;
+		Mail.Registro(this.usuarioConectado);
+		
+		activarMenu();
+		cambiarPanel(new Perfil(this));
+	}
+
+	public void insertarBBDD() {
+
+		LugarDAO lugarDAO = new LugarDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		AparienciaDAO aparienciaDAO = new AparienciaDAO();
+		Usuario_AficionDAO usuario_aficionDAO = new Usuario_AficionDAO();
+		
+		Usuario_Aficion usuario_aficion;
+		
+		int id_lugar, id_usuario, id_apariencia, id_aficion;
+		Connection conn = ConnectionDB.getConnection();
+		
+		 try {
+			conn.setAutoCommit(false);
+			id_lugar = lugarDAO.comprobarSitio(lugarRegistrado);
+			usuarioRegistrado.setId_lugar(lugarRegistrado.getId());
+					
+			id_usuario = usuarioDAO.insert(usuarioRegistrado);
+			aparienciaRegistrado.setId_usuario(usuarioRegistrado.getId());
+					
+			id_apariencia = aparienciaDAO.insert(aparienciaRegistrado);
+					
+			for(int i=0; i<aficionesRegistrado.size(); i++){
+				usuario_aficion = new Usuario_Aficion(usuarioRegistrado.getId(), aficionesRegistrado.get(i).getId());
+				usuario_aficionDAO.insert(usuario_aficion);
+			}
+			conn.commit();
+		 } catch (SQLException e) {
+			 JOptionPane.showMessageDialog(null,"Error");
+				if(conn!=null){
+					try{
+						
+						conn.rollback();
+					}catch(SQLException ex){
+						System.err.println("No se pudo deshacer" + ex.getMessage());
+					}
+				}
+			} 
+		
+		construccionConectado();
+	}
+	
+}
