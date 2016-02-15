@@ -14,6 +14,10 @@ public class Profesor {
 		this.contrasenya = contrasenya;
 	}
 	
+	public Profesor(){
+		
+	}
+	
 	/* GETTERS & SETTERS */
 	public int getId() {
 		return id;

@@ -12,6 +12,10 @@ public class Alumno {
 		this.nombre = nombre;
 	}
 	
+	public Alumno(){
+		
+	}
+	
 	/* GETTERS & SETTERS */
 	public int getId() {
 		return id;

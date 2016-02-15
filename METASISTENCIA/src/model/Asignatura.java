@@ -14,6 +14,10 @@ public class Asignatura {
 		this.id_profesor = id_profesor;
 	}
 	
+	public Asignatura(){
+		
+	}
+	
 	/* GETTERS & SETTERS */
 	public int getId() {
 		return id;
