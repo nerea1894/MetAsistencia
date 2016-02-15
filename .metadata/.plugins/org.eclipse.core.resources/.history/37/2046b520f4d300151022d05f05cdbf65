@@ -53,8 +53,8 @@ public class Login extends JPanel implements ActionListener{
 			cProfesor.setBounds(306, 102, 237, 43);		
 			tfPass.setBounds(306, 165, 237, 28);
 			bAcceder.setBounds(266, 240, 143, 52);
-			lProfesor.setBounds(116, 109, 130, 28); 
-			lContrasenya.setBounds(116, 165, 130, 28);
+			lProfesor.setBounds(116, 102, 130, 28); 
+			lContrasenya.setBounds(116, 154, 130, 28);
 			
 			//Añadir al panel los componentes
 			this.add(cProfesor);
