@@ -1,0 +1,7 @@
+package metasistencia;
+
+import javax.swing.JFrame;
+
+public class FramePrincipal extends JFrame{
+
+}

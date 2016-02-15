@@ -1,0 +1,74 @@
+package metasistencia;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+
+
+public class Login extends JPanel implements ActionListener{
+
+	//Declaracion de componentes
+		FramePrincipal framePrincipal;
+		
+		JLabel lProfesor, lContrasenya, imagen;
+		
+		JButton bAcceder;
+		JPasswordField tfPass;
+		private JComboBox cProfesor;
+		
+		String[] profesores = {"Eloy", "Miriam", "Daniel"};
+		
+		/*Constructor*/
+		public Login(JFrame framePrincipal){
+			
+			//Inicializar
+			
+			this.setLayout(null);
+			
+			this.framePrincipal = (FramePrincipal) framePrincipal;
+			
+			//Creacion de componentes
+			cProfesor = new JComboBox(profesores);
+			tfPass = new JPasswordField();
+			bAcceder = new JButton("Acceder");
+			lProfesor = new JLabel("Profesor");
+			lContrasenya = new JLabel("Contraseña");
+			
+			
+			//Posicionamiento de los componentes
+			cProfesor.setBounds(231, 90, 237, 43);		
+			tfPass.setBounds(231, 153, 237, 28);
+			bAcceder.setBounds(277, 227, 143, 52);
+			lProfesor.setBounds(26, 97, 180, 28); 
+			lContrasenya.setBounds(26, 144, 180, 28);
+			
+			//Añadir al panel los componentes
+			this.add(cProfesor);
+			this.add(tfPass);
+			this.add(bAcceder);
+			this.add(lProfesor);
+			this.add(lContrasenya);
+			
+			
+			//metodos listener
+			cProfesor.addActionListener(this);
+			bAcceder.addActionListener(this);
+	}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource().equals(bAcceder)){
+				
+				framePrincipal.cambiarPanel(new Asignatura(framePrincipal));
+			}
+			}
+
+}

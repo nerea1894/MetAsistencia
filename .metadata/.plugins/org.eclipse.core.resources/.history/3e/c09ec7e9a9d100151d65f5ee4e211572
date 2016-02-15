@@ -1,0 +1,22 @@
+package metasistencia;
+
+import javax.swing.JFrame;
+
+
+public class FramePrincipal extends JFrame{
+	
+
+	public FramePrincipal(){
+
+	static Login panelInicio;
+	
+	setTitle("MetAsistencia");
+	this.setLayout(null);
+	panelInicio = new Login(this);
+	panelInicio.setLayout(null);
+	this.setContentPane(panelInicio);
+	panelInicio.setVisible(true);
+	
+	}
+
+}
