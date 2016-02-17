@@ -12,8 +12,9 @@ import model.Profesor;
 public class ProfesorDAO {
 	
 	private static final String FIND_ALL = "SELECT * FROM profesor;";
+	private static final String CHECK_LOGIN = "SELECT * FROM profesor WHERE nombre=? AND contrasenya=?";
 	
-	public ArrayList<Profesor> findByAsignatura(int id) {
+	public ArrayList<Profesor> findAll() {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ArrayList<Profesor> profesores = new ArrayList<Profesor>();
@@ -34,6 +35,36 @@ public class ProfesorDAO {
 
 			return profesores;
 			
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			ConnectionDB.closeStatement(stmt);
+			ConnectionDB.closeConnection(conn);
+		}
+	}
+	
+	public Profesor check_login(String name, String password) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = ConnectionDB.getConnection();
+			stmt = conn.prepareStatement(CHECK_LOGIN);
+			stmt.setString(1, name);
+			stmt.setString(2, password);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				Profesor profesor = new Profesor();
+				profesor.setId(rs.getInt("id"));
+				profesor.setNombre(rs.getString("nombre"));
+				
+				return profesor;
+			} else {
+				return null;
+			}
 		} catch (SQLException e) {
 			// e.printStackTrace();
 			throw new RuntimeException(e);

@@ -1,5 +1,5 @@
 package metasistencia;
 
-public class Alumno {
+public class PanelAlumno {
 
 }

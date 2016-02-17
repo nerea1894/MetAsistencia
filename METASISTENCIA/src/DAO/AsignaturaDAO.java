@@ -13,7 +13,7 @@ public class AsignaturaDAO {
 	
 	private static final String FIND_BY_PROFESOR = "SELECT * FROM asignatura WHERE id_profesor = ?;";
 	
-	public ArrayList<Asignatura> findByAsignatura(int id) {
+	public ArrayList<Asignatura> findByProfesor(int id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();

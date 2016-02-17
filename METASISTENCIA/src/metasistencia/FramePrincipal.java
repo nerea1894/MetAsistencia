@@ -1,20 +1,33 @@
 package metasistencia;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import model.Alumno;
+import model.Asignatura;
+import model.Profesor;
+
 
 
 public class FramePrincipal extends JFrame{
 	
-	static Login panelInicio;
+	static PanelLogin panelInicio;
 	
+	public ArrayList<Profesor> profesores;
+	public Profesor profesorConectado;
+	public ArrayList<Asignatura> asignaturas;
+	public Asignatura asignaturaImpartida;
+	public ArrayList<Alumno> listaAlumnos;
+	public Alumno alumnoSeleccionado;
 	
 	public FramePrincipal(){
 
 	
 	setTitle("MetAsistencia");
 	this.setLayout(null);
-	panelInicio = new Login(this);
+	panelInicio = new PanelLogin(this);
 	panelInicio.setLayout(null);
 	this.setContentPane(panelInicio);
 	panelInicio.setVisible(true);
