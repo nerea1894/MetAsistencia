@@ -40,7 +40,6 @@ public class PanelLogin extends JPanel implements ActionListener{
 		/*Constructor*/
 		public PanelLogin(JFrame framePrincipal){
 			
-			//Recoger todos los profesores
 			ProfesorDAO profesorDAO = new ProfesorDAO();
 			this.framePrincipal.profesores = profesorDAO.findAll();
 			Profesor[] arrayProfesores = new Profesor[this.framePrincipal.profesores.size()];

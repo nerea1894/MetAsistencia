@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -22,6 +21,7 @@ import model.Asignatura;
 import model.Profesor;
 
 import java.awt.Font;
+
 
 
 public class PanelLogin extends JPanel implements ActionListener{
@@ -40,14 +40,6 @@ public class PanelLogin extends JPanel implements ActionListener{
 		/*Constructor*/
 		public PanelLogin(JFrame framePrincipal){
 			
-			//Recoger todos los profesores
-			ProfesorDAO profesorDAO = new ProfesorDAO();
-			this.framePrincipal.profesores = profesorDAO.findAll();
-			Profesor[] arrayProfesores = new Profesor[this.framePrincipal.profesores.size()];
-			for(int i=0;i<this.framePrincipal.profesores.size();i++){
-				arrayProfesores[i] = this.framePrincipal.profesores.get(i);
-			}
-			
 			//Inicializar
 			
 			this.setLayout(null);
@@ -55,7 +47,7 @@ public class PanelLogin extends JPanel implements ActionListener{
 			
 			
 			//Creacion de componentes
-			cProfesor = new JComboBox(arrayProfesores);
+			cProfesor = new JComboBox((ComboBoxModel) this.framePrincipal.profesores);
 			cProfesor.setFont(fuente);
 			tfPass = new JPasswordField();
 			bAcceder = new JButton("Acceder");
@@ -90,8 +82,8 @@ public class PanelLogin extends JPanel implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(bAcceder)){
 				
-				ProfesorDAO profesorDAO = new ProfesorDAO();
-				AsignaturaDAO asignaturaDAO = new AsignaturaDAO();
+				ProfesorDAO usuarioDAO = new ProfesorDAO();
+				AsignaturaDAO aficionDAO = new AsignaturaDAO();
 
 
 				String user, pass = null;
@@ -101,19 +93,23 @@ public class PanelLogin extends JPanel implements ActionListener{
 				} catch (NoSuchAlgorithmException e1) {
 					e1.printStackTrace();
 				}
-				framePrincipal.profesorConectado = profesorDAO.check_login(user, pass);
+				profesorConectado = usuarioDAO.check_login(user, pass);
 
-				if (framePrincipal.profesorConectado == null) {
+				if (framePrincipal.usuarioConectado == null) {
 					Object[] textoError = { "Ok" };
 
 					JOptionPane.showMessageDialog(null,
 							"Usuario y Contraseña no corresponden.", "Inane error",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					framePrincipal.asignaturas = asignaturaDAO.findByProfesor(framePrincipal.profesorConectado.getId());
-				}			
+					framePrincipal.aficionConectado = aficionDAO.login(framePrincipal.usuarioConectado.getId());
+					framePrincipal.amigosConectado = amigosDAO.login_amigos(framePrincipal.usuarioConectado.getId());
+					framePrincipal.aparienciaConectado = aparienciaDAO.login(framePrincipal.usuarioConectado.getId());
+					framePrincipal.lugarConectado = lugarDAO.login(framePrincipal.usuarioConectado.getId_lugar());
+					framePrincipal.encuentrosConectado = encuentrosDAO.login(framePrincipal.usuarioConectado.getId());
+					framePrincipal.activarMenu();
+					framePrincipal.cambiarPanel(new Menu(framePrincipal));
+				}			}
 			}
-			framePrincipal.cambiarPanel(new PanelAsignatura(framePrincipal));
-		}
 
 }

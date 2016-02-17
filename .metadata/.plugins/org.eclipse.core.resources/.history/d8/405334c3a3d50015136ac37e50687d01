@@ -39,10 +39,6 @@ public class PanelLogin extends JPanel implements ActionListener{
 		
 		/*Constructor*/
 		public PanelLogin(JFrame framePrincipal){
-			
-			//Recoger todos los profesores
-			ProfesorDAO profesorDAO = new ProfesorDAO();
-			this.framePrincipal.profesores = profesorDAO.findAll();
 			Profesor[] arrayProfesores = new Profesor[this.framePrincipal.profesores.size()];
 			for(int i=0;i<this.framePrincipal.profesores.size();i++){
 				arrayProfesores[i] = this.framePrincipal.profesores.get(i);
@@ -55,7 +51,7 @@ public class PanelLogin extends JPanel implements ActionListener{
 			
 			
 			//Creacion de componentes
-			cProfesor = new JComboBox(arrayProfesores);
+			cProfesor = new JComboBox((ComboBoxModel) this.framePrincipal.profesores);
 			cProfesor.setFont(fuente);
 			tfPass = new JPasswordField();
 			bAcceder = new JButton("Acceder");

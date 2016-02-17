@@ -14,7 +14,7 @@ public class ProfesorDAO {
 	private static final String FIND_ALL = "SELECT * FROM profesor;";
 	private static final String CHECK_LOGIN = "SELECT * FROM profesor WHERE nombre=? AND contrasenya=?";
 	
-	public ArrayList<Profesor> findAll() {
+	public ArrayList<Profesor> findByAsignatura(int id) {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ArrayList<Profesor> profesores = new ArrayList<Profesor>();
@@ -29,7 +29,6 @@ public class ProfesorDAO {
 				Profesor profesor = new Profesor();
 				profesor.setId(rs.getInt("id"));
 				profesor.setNombre(rs.getString("nombre"));
-				profesor.setContrasenya(rs.getString("contrasenya"));
 				
 				profesores.add(profesor);
 			} 
