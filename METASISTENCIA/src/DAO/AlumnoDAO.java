@@ -8,8 +8,8 @@ import model.Alumno;
 
 public class AlumnoDAO {
 
-	private static final String FIND_BY_ID = "SELECT * FROM alumno WHERE id=?";
-	private static final String FIND_BY_ASIGNATURA = "SELECT a.* FROM alumno AS a, nota AS n WHERE a.id = n.id_alumno AND n.id_asignatura = ?";
+	private static final String FIND_BY_ID = "SELECT * FROM alumno WHERE id=?;";
+	private static final String FIND_BY_ASIGNATURA = "SELECT a.* FROM alumno AS a, nota AS n WHERE a.id = n.id_alumno AND n.id_asignatura = ?;";
 	
 	public Alumno findById(int id) {
 		Connection conn = null;

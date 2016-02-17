@@ -9,18 +9,13 @@ import model.Alumno;
 import model.Asignatura;
 import model.Profesor;
 
-
-
 public class FramePrincipal extends JFrame{
 	
 	static PanelLogin panelInicio;
 	
-	public ArrayList<Profesor> profesores;
-	public Profesor profesorConectado;
-	public ArrayList<Asignatura> asignaturas;
-	public Asignatura asignaturaImpartida;
-	public ArrayList<Alumno> listaAlumnos;
-	public Alumno alumnoSeleccionado;
+	public Profesor profesorConectado = new Profesor();
+	public Asignatura asignaturaImpartida = new Asignatura();
+	public Alumno alumnoSeleccionado = new Alumno();
 	
 	public FramePrincipal(){
 

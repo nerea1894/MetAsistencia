@@ -61,6 +61,7 @@ public class ProfesorDAO {
 				Profesor profesor = new Profesor();
 				profesor.setId(rs.getInt("id"));
 				profesor.setNombre(rs.getString("nombre"));
+				profesor.setContrasenya(rs.getString("contrasenya"));
 				
 				return profesor;
 			} else {

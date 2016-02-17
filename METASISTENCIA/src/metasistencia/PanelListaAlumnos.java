@@ -15,6 +15,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
+import DAO.AlumnoDAO;
+import model.Alumno;
+
 import javax.swing.DefaultListCellRenderer.UIResource;
 
 
@@ -24,21 +28,25 @@ public class PanelListaAlumnos extends JPanel implements ActionListener{
 	
 	private JLabel lListaAlumnos;
 	private JButton bAcceder, bFinalizar, bFalta;
-	private JList listaAlumnos;
+	private JList<String> listaAlumnos;
 	private JLabel etiResultado;
 	private JScrollPane scrollPane;
+	private ArrayList<Alumno> alumnos;
 	//private JPanel panel;
 	//private ArrayList<Alumno> listaAlumnos;
 	
 	Font fuente = new Font("Century Gothic", Font.BOLD, 20);
 	
 	public PanelListaAlumnos(JFrame framePrincipal){
-	
+
 		//Inicializar
-		
 		this.setLayout(null);
-		
 		this.framePrincipal = (FramePrincipal) framePrincipal;
+		
+		//Recoger alumnos
+		AlumnoDAO alumnoDAO = new AlumnoDAO();
+		alumnos = new ArrayList<Alumno>();
+		alumnos = alumnoDAO.findByAsignatura(this.framePrincipal.asignaturaImpartida.getId());
 		
 		//Creacion de componentes
 		lListaAlumnos = new JLabel("Lista Alumnos");
@@ -73,7 +81,8 @@ public class PanelListaAlumnos extends JPanel implements ActionListener{
 		scrollPane.setBounds(20, 113, 347, 201);
 		
 		
-		listaAlumnos = new JList();
+		listaAlumnos = new JList<String>();
+		
 		listaAlumnos.setFont(new Font("Century Gothic", Font.BOLD, 13));
 		
 		//se alinean las celdas aL CENTRO
@@ -98,11 +107,11 @@ public class PanelListaAlumnos extends JPanel implements ActionListener{
 		});
 
 		//Crear un objeto DefaultListModel
-		DefaultListModel listModel = new DefaultListModel();
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		//Recorrer el contenido del ArrayList
-		for(int i=0; i<this.framePrincipal.listaAlumnos.size(); i++) {
+		for(int i=0; i<alumnos.size(); i++) {
 		    //Añadir cada elemento del ArrayList en el modelo de la lista
-		    listModel.add(i, this.framePrincipal.listaAlumnos.get(i).getNombre());
+		    listModel.add(i, alumnos.get(i).getNombre());
 		}
 		//Asociar el modelo de lista al JList
 		listaAlumnos.setModel(listModel);

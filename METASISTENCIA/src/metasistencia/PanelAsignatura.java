@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import DAO.AsignaturaDAO;
+import model.Asignatura;
 import model.Falta;
 
 
@@ -24,25 +27,32 @@ public class PanelAsignatura extends JPanel implements ActionListener {
 			private JLabel lAsignatura;
 			private JButton bAcceder, bDesconectar;
 			private JComboBox cAsignatura;
+			private ArrayList<Asignatura> asignaturas;
 			
 			private Font fuente = new Font("Century Gothic", Font.BOLD, 20);
-			
-			String[] asignaturas = {"Acceso a datos", "Desarrolo de interfaces", "Sistemas de gestion empresarial", "Base de datos"};
-			
+						
 			/*Constructor*/
 	
 	public PanelAsignatura(JFrame framePrincipal){
-	
+		
 		//Inicializar
-		
 		this.setLayout(null);
-		
 		this.framePrincipal = (FramePrincipal) framePrincipal;
+		
+		
+		//Recoger las asignaturas
+		this.asignaturas = new ArrayList<Asignatura>();
+		AsignaturaDAO asignaturaDAO = new AsignaturaDAO();
+		this.asignaturas = asignaturaDAO.findByProfesor(this.framePrincipal.profesorConectado.getId());
+		String[] nombreAsignatura = new String[asignaturas.size()];
+		for(int i=0; i<asignaturas.size(); i++){
+			nombreAsignatura[i] = asignaturas.get(i).getNombre();
+		}
 		
 		//Creacion de componentes
 		lAsignatura = new JLabel("ASIGNATURA");
 		lAsignatura.setFont(fuente);
-		cAsignatura = new JComboBox(asignaturas);
+		cAsignatura = new JComboBox(nombreAsignatura);
 		cAsignatura.setFont(fuente);
 		bAcceder = new JButton("Empezar clase");
 		bAcceder.setFont(fuente);
@@ -79,6 +89,7 @@ public class PanelAsignatura extends JPanel implements ActionListener {
 		
 		if(e.getSource().equals(bAcceder)){
 			
+			framePrincipal.asignaturaImpartida = this.asignaturas.get(cAsignatura.getSelectedIndex());
 			framePrincipal.cambiarPanel(new PanelListaAlumnos(framePrincipal));
 		}
 		
