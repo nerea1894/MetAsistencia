@@ -20,10 +20,9 @@ public class AmonestacionDAO {
 		try {
 			conn = ConnectionDB.getConnection();
 			stmt = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, amonestacion.getId());
-			stmt.setString(2, amonestacion.getMotivo());
-			stmt.setInt(3, amonestacion.getId_clase());
-			stmt.setInt(4, amonestacion.getId_alumno());
+			stmt.setString(1, amonestacion.getMotivo());
+			stmt.setInt(2, amonestacion.getId_clase());
+			stmt.setInt(3, amonestacion.getId_alumno());
 			
 			int result = stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
