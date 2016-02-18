@@ -9,6 +9,15 @@
 <fullyQualifiedTypeName name="java.sql.Statement"/>
 <fullyQualifiedTypeName name="java.sql.ResultSet"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
-<fullyQualifiedTypeName name="model.Asignatura"/>
 <fullyQualifiedTypeName name="model.Profesor"/>
+<fullyQualifiedTypeName name="DAO.ProfesorDAO"/>
+<fullyQualifiedTypeName name="metodos.Contrasenya"/>
+<fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="java.awt.Menu"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.Asignatura"/>
+<fullyQualifiedTypeName name="DAO.AsignaturaDAO"/>
+<fullyQualifiedTypeName name="model.Alumno"/>
+<fullyQualifiedTypeName name="DAO.AlumnoDAO"/>
 </qualifiedTypeNameHistroy>
